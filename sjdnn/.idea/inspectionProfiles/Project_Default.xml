@@ -6,6 +6,11 @@
         <list>
           <option value="E231" />
           <option value="E225" />
+          <option value="E262" />
+          <option value="E261" />
+          <option value="W292" />
+          <option value="E302" />
+          <option value="E115" />
         </list>
       </option>
     </inspection_tool>
@@ -14,6 +19,7 @@
         <list>
           <option value="N806" />
           <option value="N803" />
+          <option value="N802" />
         </list>
       </option>
     </inspection_tool>
@@ -21,6 +27,13 @@
       <option name="ignoredNames">
         <list>
           <option value="iter" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="jnn.plot.nnPredict" />
         </list>
       </option>
     </inspection_tool>

@@ -7,24 +7,17 @@ import traceback
 from collections import defaultdict
 
 import numpy as np
-
-
-# from bson import uti
+import numpy
 
 class Ea(defaultdict):
     def __init__(self):
         super(Ea,self).__init__()
-
-    # @staticmethod
-    # def jsons(s):
-    #     j = json.loads(s.decode('utf-8'))
 
     def __getattr__(self, name):
         if name in self:
             if self[name] is None:
                 return ""
             return self[name]
-
         n = Ea()
         super(Ea, self).__setitem__(name, n)
         return n
@@ -34,8 +27,6 @@ class Ea(defaultdict):
 
     def __getitem__(self, name):
         if name not in self:
-            # 可用 if e['key']: 判断是否有这个节点
-            # return False
             super(Ea, self).__setitem__(name, Ea())
         return super(Ea, self).__getitem__(name)
 
@@ -53,10 +44,14 @@ class Ea(defaultdict):
                 rv_str += "%s: %s \n" % (ff, v)
             else:
                 rv_str += "%s: '%s' \n" % (ff, v)
-        elif isinstance(v, np.ndarray):
+        elif isinstance(v, np.ndarray) or isinstance(v, numpy.ndarray):
             # rv_str += "%s: np.ndarray shape %s \n" % (ff, v.shape)
-            o = ", ".join(map(str,v))
-            rv_str += "%s: np.ndarray:%s [%s]\n" % (ff, v.shape, o)
+            if v.shape==() :
+                o = str(v)
+            else:
+                o = ", ".join(map(str,v))
+            # rv_str += "%s: np.ndarray:%s [%s]\n" % (ff, v.shape, o)
+            rv_str += "%s: np.ndarray:%s\n" % (ff, v.shape)
 
         elif isinstance(v, tuple):
             rv_str += "%s: (%s) \n" % (ff, u",".join(map(str, v)))
@@ -209,7 +204,6 @@ class Ea(defaultdict):
         # pickle.dump(obj, open(full_path, "wb"))
         json.dump(obj,open(full_path,"wt"),ensure_ascii=False,indent=None,separators=(',', ':'))
 
-
     @staticmethod
     def load(f_path):
         if not os.path.exists(f_path):
@@ -319,10 +313,6 @@ class Ea(defaultdict):
     def to_json(self,indent=None):
         return json.dumps(self,ensure_ascii=False,indent=indent,separators=(',', ':'))
 
-    # def to_json_file(self,indent=None):
-    #     fp =
-    #     json.dump(self,)
-
     @staticmethod
     def jsons(s):
         print()
@@ -375,8 +365,6 @@ def demo1():
     from sj.sjlog import SJLog
     l = SJLog().handler('Ea').debug
     Ea.debug(A,l)
-
-
 
     # if A.has_key('d'):
     #     print("has key a")
