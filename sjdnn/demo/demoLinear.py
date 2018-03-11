@@ -1,8 +1,8 @@
 from jnn.plot import *
 from jnn.nn import *
+from jnn.dataFactory import *
 from jnn.activFun import eaActivFun
 from jnn.costFun import eaCostFun
-from jnn.dataFactory import *
 from jnn.ea import Ea
 
 def eaNetLinear(eaData):

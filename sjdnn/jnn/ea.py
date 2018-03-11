@@ -49,9 +49,9 @@ class Ea(defaultdict):
             if v.shape==() :
                 o = str(v)
             else:
-                o = ", ".join(map(str,v))
-            # rv_str += "%s: np.ndarray:%s [%s]\n" % (ff, v.shape, o)
-            rv_str += "%s: np.ndarray:%s\n" % (ff, v.shape)
+                s = "\n".ljust(len(ff)+5)
+                o =s + s.join(map(str,v))
+            rv_str += "%s: np.ndarray:%s %s\n" % (ff, v.shape, o)
 
         elif isinstance(v, tuple):
             rv_str += "%s: (%s) \n" % (ff, u",".join(map(str, v)))
