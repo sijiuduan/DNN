@@ -46,7 +46,7 @@ def eaDataTFRing(m=1000):
     R = R + noise
 #   二值化输出
     Y = np.int32(np.array(R < 2.5))
-    print("dataTF  X.shape",X.shape,"Y.shape",Y.shape)
+    # print("dataTF  X.shape",X.shape,"Y.shape",Y.shape)
 #   合并输入输出数据 （学会用 np.r_[...] 和 np.c_[...])
     eaData = Ea()
     eaData.X = X
