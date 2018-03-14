@@ -46,11 +46,18 @@ class Ea(defaultdict):
                 rv_str += "%s: '%s' \n" % (ff, v)
         elif isinstance(v, np.ndarray) or isinstance(v, numpy.ndarray):
             # rv_str += "%s: np.ndarray shape %s \n" % (ff, v.shape)
-            if v.shape==() :
+            if v.shape==():
                 o = str(v)
             else:
-                s = "\n".ljust(len(ff)+5)
+                i = ff.find('☞')
+                oo = ff[0:i].ljust(len(ff))
+                oo = oo.replace('├', '│')
+                oo = oo.replace('─', ' ')
+                oo = oo.replace('└', ' ')
+                s = "\n%s"%oo.ljust(len(ff)+1)
+                np.set_printoptions(linewidth=500, precision=2,threshold=3, edgeitems=3)
                 o =s + s.join(map(str,v))
+
             rv_str += "%s: np.ndarray:%s %s\n" % (ff, v.shape, o)
 
         elif isinstance(v, tuple):
