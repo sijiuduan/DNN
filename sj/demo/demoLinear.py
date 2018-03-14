@@ -29,4 +29,3 @@ def demoLinear():
 if __name__ == '__main__':
     demoLinear()
 
-ß
