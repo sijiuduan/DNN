@@ -9,6 +9,8 @@ from collections import defaultdict
 import numpy as np
 import numpy
 
+# np.set_printoptions(linewidth=500, precision=2,threshold=32, edgeitems=3)
+
 class Ea(defaultdict):
     def __init__(self):
         super(Ea,self).__init__()
@@ -55,7 +57,7 @@ class Ea(defaultdict):
                 oo = oo.replace('─', ' ')
                 oo = oo.replace('└', ' ')
                 s = "\n%s"%oo.ljust(len(ff)+1)
-                np.set_printoptions(linewidth=500, precision=2,threshold=3, edgeitems=3)
+                # np.set_printoptions(linewidth=500, precision=2,threshold=3, edgeitems=3)
                 o =s + s.join(map(str,v))
 
             rv_str += "%s: np.ndarray:%s %s\n" % (ff, v.shape, o)
