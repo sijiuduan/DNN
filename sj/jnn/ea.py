@@ -58,7 +58,12 @@ class Ea(defaultdict):
                 oo = oo.replace('└', ' ')
                 s = "\n%s"%oo.ljust(len(ff)+1)
                 # np.set_printoptions(linewidth=500, precision=2,threshold=3, edgeitems=3)
-                o =s + s.join(map(str,v))
+                if len(v)>4:
+                    o = s + s.join(map(str, v[:3]))
+                    o = o + s + "    ...   "
+                    o = o + s + str(v[-1])
+                else:
+                    o =s + s.join(map(str,v))
 
             rv_str += "%s: np.ndarray:%s %s\n" % (ff, v.shape, o)
 

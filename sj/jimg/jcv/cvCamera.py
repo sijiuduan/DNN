@@ -16,7 +16,6 @@ class Camera(Filter):
         self.cap = cv2.VideoCapture(0)
         self.cap.set(3, 1280 / 2)
         self.cap.set(4, 1024 / 2)
-
     def onFrame_capChess(self, frame):
         w = 9
         h = 6
@@ -32,6 +31,23 @@ class Camera(Filter):
             # 将角点在图像上显示
             cv2.drawChessboardCorners(frame, (w, h), corners, ret)
         return frame
+
+    def Rec(self):
+        fourcc = cv2.VideoWriter_fourcc(*'XVID')
+        out = cv2.VideoWriter('output.avi', fourcc, 20.0, (640, 480))
+        while (self.cap.isOpened()):
+            ret, frame = self.cap.read()
+            if ret == True:
+                out.write(frame)
+                cv2.imshow("Recording...", frame)
+
+                # 监听键盘，按下q键退出
+                keypress = cv2.waitKey(1)
+                if keypress & 0xFF == ord('q'):
+                    break
+        self.cap.release()
+        out.release()
+        cv2.destroyAllWindows()
 
     def start(self):
         while (self.cap.isOpened()):
@@ -55,8 +71,7 @@ class Camera(Filter):
         cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-    pass
-    # cam = Camera()
+    cam = Camera()
     # cam.addFilter(ChessFilter())
-    # cam.start()
+    cam.Rec()
     # print(capPropId('FRAME_HEIGHT'))
