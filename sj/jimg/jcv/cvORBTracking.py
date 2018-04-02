@@ -11,16 +11,21 @@ class ORBKeyFrame():
         cv = Ea()
         cv.orb = cv2.ORB_create(500)
         cv.bf  = cv2.BFMatcher(cv2.NORM_HAMMING)
-        cv.diff = 0.50
+        cv.diff = 0.35
         self.cv = cv
         self.status = 0
+        self.p1p2 = Ea()
 
     def debug(self):
         np.set_printoptions(linewidth=1500, precision=2, threshold=32, edgeitems=3)
         # Ea.show(self.org)
         # Ea.show(self.cur)
-        Ea.show(self.rich)
-        print(self.org.cv.detect.dsps.shape)
+        # Ea.show(self.rich)
+        # print(self.org.cv.detect.dsps.shape)
+
+        # Ea.show(self.match)
+        print(self.p1p2.kps.shape)
+        print(self.p1p2.kps)
 
     def rich2cv(self):
         rich_kps = []
@@ -96,19 +101,28 @@ class ORBKeyFrame():
             self.cur.cv.matches = matches
             self.cur.cv.good = good
 
+            _p1p2 = []
+
             for (m, n) in matches:
                 if m.distance < self.cv.diff * n.distance and m.distance > self.cv.diff * 0.90 * n.distance:
                     pt = self.cur.cv.rich.kps[m.queryIdx].pt
+                    pt2 = cv_kps[m.trainIdx].pt
                     dsp = self.cur.cv.detect.dsps[m.trainIdx]
 
                     _kpt = lambda x: int(x[0]) * 1000 + int(x[1])
 
-                    if len(self.rich[_kpt(pt)].dsps) < 10:
+                    _p1p2.append([pt[0],pt[1],pt2[0],pt2[1]])
+
+                    if len(self.rich[_kpt(pt)].dsps) < 50:
                         self.rich[_kpt(pt)].dsps.append(dsp)
                     else:
                         # print("max 50")
                         self.rich[_kpt(pt)].dsps.pop(1)
                         self.rich[_kpt(pt)].dsps.append(dsp)
+
+            self.p1p2.kps = np.array(_p1p2)
+            self.p1p2.org_frame = self.org.draw_frame
+            self.p1p2.cur_frame = draw_frame
             pass
 
     def draw_cur_cv_detect(self, draw_frame, c=(51, 163, 236)):
@@ -143,8 +157,9 @@ class ORBKeyFrame():
 class ORBTracking(Filter):
     def __init__(self):
         Filter.__init__(self)
-        self.status = 0
         self.keyframe = ORBKeyFrame()
+        self.frame_id = 0
+        print("b,r,e,s,p")
 
     def onFrame(self, filter_frame, draw_frame):
         self.keyframe.update(filter_frame,draw_frame)
@@ -168,6 +183,12 @@ class ORBTracking(Filter):
             print('e')
             self.keyframe.status = 0
         elif key & 0xFF == ord('s'):
+            # cv2.imwrite("org.jpg",self.keyframe.p1p2.org_frame)
+            # cv2.imwrite("cur.jpg", self.keyframe.p1p2.cur_frame)
+            # Ea.dump(self.keyframe.p1p2.kps,"p1p2.pkl",".")
+            print(type(self.keyframe.p1p2.kps))
+
+
             print('s')
         elif key & 0xFF == ord('p'):
             self.keyframe.debug()

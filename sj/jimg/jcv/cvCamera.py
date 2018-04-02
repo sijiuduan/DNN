@@ -14,8 +14,8 @@ class Camera(Filter):
         Filter.__init__(self)
         # self.name = "Camera"
         self.cap = cv2.VideoCapture(0)
-        self.cap.set(3, 1280 / 2)
-        self.cap.set(4, 1024 / 2)
+        self.cap.set(3, 1280 / 4)
+        self.cap.set(4, 1024 / 4)
     def onFrame_capChess(self, frame):
         w = 9
         h = 6
@@ -52,8 +52,9 @@ class Camera(Filter):
     def start(self):
         while (self.cap.isOpened()):
             ret, frame = self.cap.read()
-
+            # print(frame.shape)
             if ret == True:
+                # gray = cv2.resize(frame, (int(frame.shape[1]/2), int(frame.shape[0]/2)))
                 gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
                 self.onFrame(gray, frame)
                 cv2.imshow(self.getName(), frame)
@@ -73,5 +74,6 @@ class Camera(Filter):
 if __name__ == '__main__':
     cam = Camera()
     # cam.addFilter(ChessFilter())
-    cam.Rec()
+    # cam.Rec()
     # print(capPropId('FRAME_HEIGHT'))
+    cam.start()
